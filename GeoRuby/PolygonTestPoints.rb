@@ -2,24 +2,24 @@ require 'rubygems'
 require 'geo_ruby'
 
 module GeoRuby
-	module SimpleFeatures
-		class Polygon < Geometry
-			# This checks the first ring, not all rings. It can be easily adapted to
-			# loop through each ring and only return true if one or more contain the point
-			def contains(point_to_check)
-				c = 0
-				ring = rings[0]
-				last = ring[ring.length-1]
-				ring.points.each do |point|
-					if (point.y>point_to_check.y) != (last.y>point_to_check.y)
-						c += 1 if point_to_check.x < (last.x-point.x) * (point_to_check.y-point.y) / (last.y/point.y) + point.x
-					end
-					last = point
-				end
-				((c%2) == 1) 
-			end
-		end
-	end
+  module SimpleFeatures
+    class Polygon < Geometry
+      # This checks the first ring, not all rings. It can be easily adapted to
+      # loop through each ring and only return true if one or more contain the point
+      def contains(point_to_check)
+        c = 0
+        ring = rings[0]
+        last = ring[ring.length-1]
+        ring.points.each do |point|
+          if (point.y>point_to_check.y) != (last.y>point_to_check.y)
+            c += 1 if point_to_check.x < (last.x-point.x) * (point_to_check.y-point.y) / (last.y/point.y) + point.x
+          end
+          last = point
+        end
+        ((c%2) == 1) 
+      end
+    end
+  end
 end
 
 
@@ -33,12 +33,12 @@ ring = GeoRuby::SimpleFeatures::LinearRing.from_coordinates(poly_points)
 polygon = GeoRuby::SimpleFeatures::Polygon.from_linear_rings([ring])
 
 def test_case(name, points, polygon)
-	inside = 0
-	points.each do |coord|
-		point = GeoRuby::SimpleFeatures::Point.from_coordinates(coord)
-		inside += 1 if polygon.contains(point)
-	end
-	printf "poly contains %s/%s points from '%s'\n", inside, points.length, name
+  inside = 0
+  points.each do |coord|
+    point = GeoRuby::SimpleFeatures::Point.from_coordinates(coord)
+    inside += 1 if polygon.contains(point)
+  end
+  printf "poly contains %s/%s points from '%s'\n", inside, points.length, name
 end
 
 
