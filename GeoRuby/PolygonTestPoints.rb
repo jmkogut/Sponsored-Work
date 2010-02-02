@@ -5,6 +5,8 @@ require 'test/unit'
 module GeoRuby
 	module SimpleFeatures
 		class Polygon < Geometry
+			# This checks the first ring, not all rings. It can be easily adapted to
+			# loop through each ring and only return true if one or more contain the point
 			def contains(point_to_check)
 				c = 0
 				ring = rings[0]
