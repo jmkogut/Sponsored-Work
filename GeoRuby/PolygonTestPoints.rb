@@ -32,17 +32,15 @@ out_points = [[-95.8193635940552, 41.0129038758068], [-95.8218097686768, 41.0130
 ring = GeoRuby::SimpleFeatures::LinearRing.from_coordinates(poly_points)
 polygon = GeoRuby::SimpleFeatures::Polygon.from_linear_rings([ring])
 
-inside = 0
-in_points.each do |coord|
- 	point = GeoRuby::SimpleFeatures::Point.from_coordinates(coord)
-	inside += 1 if polygon.contains(point)
+def test_case(name, points, polygon)
+	inside = 0
+	points.each do |coord|
+		point = GeoRuby::SimpleFeatures::Point.from_coordinates(coord)
+		inside += 1 if polygon.contains(point)
+	end
+	printf "poly contains %s/%s points from '%s'\n", inside, points.length, name
 end
-printf "poly contains %s/%s points from 'in_points'\n", inside, in_points.length
 
-outside = 0
-out_points.each do |coord|
- 	point = GeoRuby::SimpleFeatures::Point.from_coordinates(coord)
-	outside += 1 if polygon.contains(point)
-end
-printf "poly contains %s/%s points from 'out_points'\n", outside, out_points.length
 
+test_case('internal points', in_points, polygon)
+test_case('external points', out_points, polygon)
